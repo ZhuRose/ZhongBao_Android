@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorTheme">#FA8900</color>
+    <color name="colorTab">#2B2B2B</color>
+    <color name="colorLine">#D2D2D2</color>
+    <color name="colorText">#9C9C9C</color>
+    <color name="colorBack">#EFEFEF</color>
+
+    <color name="colorPrice">#DB5A34</color>
+    <color name="colorScore">#F2A23B</color>
+
+    <color name="colorDialog">#66000000</color>
+    <color name="colorDialogBack">#DCEFEFEF</color>
+    
+    <color name="colorSelected">#4CAD65</color>
+    <color name="colorUnSelected">#FFFFFF</color>
+    <color name="colorUnable">#DCDCDC</color>
+</resources>

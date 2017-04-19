@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PageController">
+        <!-- 未选中圆点的颜色 -->
+        <attr name="unselectedColor" format="color"/>
+        <!-- 选中圆点的颜色 -->
+        <attr name="selectedColor" format="color"/>
+        <!-- 圆点大小 -->
+        <attr name="radius" format="dimension"/>
+        <!-- 间距 -->
+        <attr name="interval" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="CycleScrollViewIndicators">
+        <!-- 长度 -->
+        <attr name="circleWidth" format="dimension"/>
+    </declare-styleable>
+    
+    <declare-styleable name="BaseNavigationView">
+        <attr name="navigationtitle" format="string"/>
+        <attr name="backButtonHidden" format="boolean"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="ModelView">
+        <attr name="modelIcon" format="reference"/>
+        <attr name="modelTitle" format="string"/>
+    </declare-styleable>
+
+</resources>

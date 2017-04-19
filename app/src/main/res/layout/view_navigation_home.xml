@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/bgView"
+        android:alpha="0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+    </View>
+
+    <LinearLayout
+        android:id = "@+id/locationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="12dp">
+        <TextView
+            android:id="@+id/locationTitle"
+            android:text="成都市"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="8dp"
+            android:src="@drawable/pull_down"
+            android:layout_marginTop="3dp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/mapBtn"
+        android:layout_width="20dp"
+        android:layout_height="26dp"
+        android:background="@drawable/location_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="12dp"
+        app:layout_constraintRight_toRightOf="parent"/>
+    
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        app:cardBackgroundColor="#66eeeeee"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="0px"
+        app:cardMaxElevation="2px"
+        app:cardUseCompatPadding="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/locationBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/mapBtn"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp">
+        
+        <ImageView
+            android:src="@drawable/search_icon"
+            android:scaleType="fitXY"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp"/>
+
+        <TextView
+            android:text="搜索 场馆、地点、运动"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="34dp"
+            android:layout_marginRight="12dp"/>
+
+    </android.support.v7.widget.CardView>
+    
+    
+</android.support.constraint.ConstraintLayout>

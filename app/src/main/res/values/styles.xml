@@ -1,0 +1,44 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorBack</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorAccent">@android:color/transparent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:screenOrientation">portrait</item>
+        <!-- 允许使用transitions -->
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="LaunchTheme" parent="AppTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.DialogWhenLarge">
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 无标题 -->
+        <item name="windowNoTitle">true</item>
+        <!-- 背景颜色 -->
+        <item name="android:windowBackground">@color/colorDialog</item>
+
+    </style>
+
+    <style name="CustomTextAppearance" >
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
+
+
+</resources>

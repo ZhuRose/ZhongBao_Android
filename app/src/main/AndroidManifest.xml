@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.edu.uestc.zhongbao_android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:name=".application.MainApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <activity android:name=".controller.launch.LaunchActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".controller.login.LoginActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".controller.login.register.RegisterActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".controller.main.MainActivity"/>
+
+        <activity android:name=".controller.main.publish.PublishActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".controller.main.home.detail.HomeDetailActivity"/>
+
+        <activity android:name=".controller.main.home.detail.share.ShareActivity"
+            android:theme="@style/DialogTheme"/>
+
+        <activity android:name=".controller.main.home.detail.all_comments.AllCommentsActivity"/>
+
+        <activity android:name=".controller.main.home.detail.chose_site.ChoseSiteActivity"/>
+
+        <activity android:name=".controller.main.home.session_list.SessionListActivity"/>
+
+        <activity android:name=".controller.main.me.info.InfoActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".controller.main.me.info.picker.PickerActivity"
+            android:theme="@style/DialogTheme"/>
+
+        <activity android:name=".controller.main.me.setting.SettingActivity"/>
+
+        <activity android:name=".controller.main.publish.AlertActivity"
+            android:theme="@style/DialogTheme"/>
+
+        <activity android:name=".controller.main.message.detail.WebActivity"/>
+
+        <activity android:name=".controller.main.home.chose_city.ChoseCityActivity"/>
+
+        <activity android:name=".controller.main.me.my_orders.MyOrdersActivity"/>
+
+        <activity android:name=".controller.main.me.my_locus.MyLocusActivity"/>
+
+        <activity android:name=".controller.main.me.my_collection.MyCollectionActivity"/>
+
+        <activity android:name=".controller.main.me.feedback.FeedbackActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".controller.main.home.detail.chose_site.order_detail.OrderDetailActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".controller.main.me.my_orders.comment.CommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".controller.main.sport.detail.SportDetailActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBack"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.edu.uestc.zhongbao_android.view.BaseNavigationView
+        android:id="@+id/navi"
+        android:layout_width="0dp"
+        android:layout_height="77dp"
+        app:navigationtitle="动态详情"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </com.edu.uestc.zhongbao_android.view.BaseNavigationView>
+
+    <com.edu.uestc.zhongbao_android.view.InputView
+        android:id="@+id/inputView"
+        android:background="@color/colorBack"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </com.edu.uestc.zhongbao_android.view.InputView>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/navi"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/inputView"
+        app:layout_constraintRight_toRightOf="parent">
+
+    </ListView>
+
+</android.support.constraint.ConstraintLayout>

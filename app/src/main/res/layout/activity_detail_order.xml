@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.edu.uestc.zhongbao_android.view.BaseNavigationView
+        android:id="@+id/navi"
+        android:layout_width="0dp"
+        android:layout_height="77dp"
+        app:navigationtitle="订单详情"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </com.edu.uestc.zhongbao_android.view.BaseNavigationView>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/bottomView"
+        android:background="#fff"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <Button
+            android:id="@+id/paymentBtn"
+            android:text="立即下单"
+            android:textSize="16sp"
+            android:textColor="#fff"
+            android:background="@color/colorTheme"
+            android:layout_width="144dp"
+            android:layout_height="0dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+            android:id="@+id/amountView"
+            android:text="总额"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp" />
+        <TextView
+            android:id="@+id/unitView"
+            android:text="¥"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/amountView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+        <TextView
+            android:id="@+id/priceView"
+            android:text="2000"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/unitView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/scroller"
+        android:background="@color/colorBack"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/navi"
+        app:layout_constraintBottom_toTopOf="@+id/bottomView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            
+            <android.support.constraint.ConstraintLayout
+                android:background="#fff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/sessionView"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+                    <ImageView
+                        android:id="@+id/sessionIconView"
+                        android:src="@drawable/basketball"
+                        android:scaleType="fitXY"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="12dp" />
+
+                    <TextView
+                        android:id="@+id/sessionNameView"
+                        android:text="场馆名"
+                        android:textColor="#000"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/sessionIconView"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="12dp" />
+
+                    <TextView
+                        android:id="@+id/timeView"
+                        android:text="2017-10-16"
+                        android:textColor="@color/colorText"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <View
+                        android:background="@drawable/line_imaginary"
+                        android:layerType="software"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/sessionView"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp">
+                    <TextView
+                        android:text="time\ntime2\ntime3"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:text="number"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:text="price"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/orderView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:text="订单号:"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp" />
+
+                <TextView
+                    android:id="@+id/orderText"
+                    android:text="2eewfdsf"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/pwdView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fff"
+                android:layout_marginTop="1dp">
+                <TextView
+                    android:text=" 密  码 :"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp" />
+
+                <TextView
+                    android:id="@+id/pwdText"
+                    android:text="2eewfdsf"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/phoneView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:text="手机号:"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp" />
+
+                <EditText
+                    android:id="@+id/phoneEdit"
+                    android:background="@null"
+                    android:inputType="phone"
+                    android:hint="请输入手机号"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textAlignment="viewEnd"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp" />
+            </android.support.constraint.ConstraintLayout>
+
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/contactView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fff"
+                android:layout_marginTop="1dp">
+                <TextView
+                    android:text="联系人:"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp" />
+
+                <EditText
+                    android:id="@+id/contactEdit"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:hint="请输入联系人"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textAlignment="viewEnd"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:id="@+id/zfbIconView"
+                    android:src="@drawable/zfb_icon"
+                    android:scaleType="fitXY"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="12dp"/>
+                <TextView
+                    android:id="@+id/zfbTextView"
+                    android:text="支付宝支付"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/zfbIconView"
+                    android:layout_marginLeft="12dp"/>
+                <TextView
+                    android:text="使用支付宝进行支付"
+                    android:textColor="@color/colorText"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/zfbTextView"
+                    android:layout_marginLeft="12dp"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

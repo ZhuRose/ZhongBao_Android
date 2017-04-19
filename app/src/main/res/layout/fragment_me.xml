@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBack"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/headView"
+        android:layout_width="0dp"
+        android:layout_height="132dp"
+        android:background="@color/colorTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/guideView"
+            android:src="@drawable/guide_white"
+            android:scaleType="fitXY"
+            android:layout_width="9dp"
+            android:layout_height="14dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="12dp" />
+
+
+        <ImageView
+            android:id="@+id/iconView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:srcCompat="@drawable/headicon_default"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp" />
+
+        <TextView
+            android:id="@+id/nameView"
+            android:text="小张"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/iconView"
+            android:layout_marginTop="12dp"
+            app:layout_constraintLeft_toRightOf="@id/iconView"
+            android:layout_marginLeft="12dp"/>
+
+        <TextView
+            android:id="@+id/sexView"
+            android:text="性别：女"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            app:layout_constraintTop_toBottomOf="@+id/nameView"
+            app:layout_constraintLeft_toLeftOf="@+id/nameView"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="3dp" />
+
+        <TextView
+            android:id="@+id/ageView"
+            android:text="年龄：23"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/nameView"
+            app:layout_constraintLeft_toRightOf="@+id/sexView"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="12dp"
+            app:layout_constraintRight_toLeftOf="@+id/guideView"
+            android:layout_marginRight="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <com.edu.uestc.zhongbao_android.view.ModelView
+        android:id="@+id/modelView1"
+        app:modelTitle="我的订单"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/headView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="12dp">
+    </com.edu.uestc.zhongbao_android.view.ModelView>
+
+    <com.edu.uestc.zhongbao_android.view.ModelView
+        android:id="@+id/modelView2"
+        app:modelTitle="我的轨迹"
+        app:modelIcon="@drawable/locus"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/modelView1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="1dp">
+    </com.edu.uestc.zhongbao_android.view.ModelView>
+
+    <com.edu.uestc.zhongbao_android.view.ModelView
+        android:id="@+id/modelView3"
+        app:modelTitle="我喜欢的"
+        app:modelIcon="@drawable/collection"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/modelView2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="1dp">
+    </com.edu.uestc.zhongbao_android.view.ModelView>
+
+    <com.edu.uestc.zhongbao_android.view.ModelView
+        android:id="@+id/modelView4"
+        app:modelTitle="意见反馈"
+        app:modelIcon="@drawable/feedback"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/modelView3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="12dp">
+    </com.edu.uestc.zhongbao_android.view.ModelView>
+
+    <com.edu.uestc.zhongbao_android.view.ModelView
+        android:id="@+id/modelView5"
+        app:modelTitle="设置"
+        app:modelIcon="@drawable/setting"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/modelView4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="1dp">
+    </com.edu.uestc.zhongbao_android.view.ModelView>
+
+</android.support.constraint.ConstraintLayout>

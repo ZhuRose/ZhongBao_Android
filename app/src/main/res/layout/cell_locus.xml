@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="84dp"
+    android:minHeight="84dp">
+
+    <ImageView
+        android:id="@+id/iconView"
+        android:src="@drawable/soccer"
+        android:scaleType="fitXY"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iconView"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="12dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:text="日期："
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/timeView"
+                android:text="2017-05-20"
+                android:textColor="@color/colorText"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:text="运动："
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/sportView"
+                android:text="足球"
+                android:textColor="@color/colorText"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:text="场馆："
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/sessionView"
+                android:text="电子科技大学"
+                android:textColor="@color/colorText"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line"
+        android:background="@drawable/line_imaginary_vertical"
+        android:layout_width="84dp"
+        android:layout_height="0dp"
+        android:layerType="software"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="42dp"/>
+
+</android.support.constraint.ConstraintLayout>

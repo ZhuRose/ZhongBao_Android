@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/mainView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@color/colorDialogBack"
+        app:cardElevation="0px"
+        app:cardMaxElevation="2px"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <com.edu.uestc.zhongbao_android.controller.base.StatusView
+            android:id="@+id/statusView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp">
+        </com.edu.uestc.zhongbao_android.controller.base.StatusView>
+
+        <TextView
+            android:id="@+id/textView"
+            android:text="大师奥司法考试房价快速恢复健康你手机地方纳斯达克菲尼克斯达芙妮速度快解放你的伤口就发你手机壳了"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:minWidth="60dp"
+            android:maxWidth="180dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="72dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp" />
+
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

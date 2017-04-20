@@ -81,8 +81,8 @@ public class LoginActivity extends BaseActivity {
                 UserManager.shareManager(mContext).setGender(model.gender);
                 UserManager.shareManager(mContext).setPhoneNum(String.valueOf(userEdit.getText()));
                 UserManager.shareManager(mContext).setPassword(String.valueOf(pwdEdit.getText()));
-                LoginActivity.this.finishAfterTransition();
                 BaseDialogFragment.showSuccess(getSupportFragmentManager(), "登录成功");
+                LoginActivity.this.finishAfterTransition();
             }
 
             @Override
@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        userEdit.addTextChangedListener(new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -115,6 +115,15 @@ public class LoginActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        };
+        userEdit.addTextChangedListener(textWatcher);
+        pwdEdit.addTextChangedListener(textWatcher);
+        loginBtn.setEnabled(false);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BaseDialogFragment.dismissDialog();
     }
 }

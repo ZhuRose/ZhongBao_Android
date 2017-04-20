@@ -18,8 +18,12 @@ public class BaseListActivity extends BaseActivity {
     @BindView(R.id.list)
     protected ListView list;
 
+    protected int page;
+
     @Override
     protected int loadLayout() {
         return R.layout.activity_list;
     }
+
+
 }

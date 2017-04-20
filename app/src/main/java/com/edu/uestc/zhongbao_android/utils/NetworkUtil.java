@@ -9,6 +9,8 @@ import com.edu.uestc.zhongbao_android.controller.base.BaseDialogFragment;
 import com.edu.uestc.zhongbao_android.model.HomeModel;
 import com.edu.uestc.zhongbao_android.model.MessageModel;
 import com.edu.uestc.zhongbao_android.model.SessionDetailModel;
+import com.edu.uestc.zhongbao_android.model.SportsCityCommentsModel;
+import com.edu.uestc.zhongbao_android.model.SportsCityModel;
 import com.edu.uestc.zhongbao_android.model.UserModel;
 import com.edu.uestc.zhongbao_android.utils.cache.ZhuHttpWithCacheManager;
 import com.google.gson.JsonElement;
@@ -29,6 +31,9 @@ public abstract class NetworkUtil {
     static final String HOME_SUFFIX = "/home/";
     static final String MESSAGE_SUFFIX = "/news/";
     static final String SESSION_DETAIL_SUFFIX = "/detail/";
+    static final String SPORTS_CITY_SUFFIX = "/sportscity/list/";
+    static final String SPORTS_CITY_COMMENTS_SUFFIX = "/sportscity/detail/";
+    static final String SAVE_PERSON_INFO_SUFFIX = "/user/save_myinfo_detail/";
 
     Activity activity;
     String tag;
@@ -154,5 +159,89 @@ public abstract class NetworkUtil {
         });
     }
 
+    public void sportsCityNetwork(String page) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("page", page);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequestCache(SPORTS_CITY_SUFFIX, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                final SportsCityModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, SportsCityModel.class);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void sportsCityCommentsNetwork(String uuid, String page) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("uuid", uuid);
+        map.put("page", page);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequestCache(SPORTS_CITY_COMMENTS_SUFFIX, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                final SportsCityCommentsModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, SportsCityCommentsModel.class);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void savePersonInfoNetwork(String nickname, String sex, String birthday, String headpic) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("token", UserManager.shareManager(activity).getToken());
+        map.put("nickname", nickname);
+        map.put("gender", sex);
+        map.put("birthday", birthday);
+        if (headpic!=null && !headpic.isEmpty()) map.put("headpic", headpic);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(SAVE_PERSON_INFO_SUFFIX, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(null, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
 
 }

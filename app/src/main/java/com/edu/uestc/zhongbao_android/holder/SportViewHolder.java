@@ -2,10 +2,16 @@ package com.edu.uestc.zhongbao_android.holder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.edu.uestc.zhongbao_android.R;
+import com.edu.uestc.zhongbao_android.application.Constant;
+import com.edu.uestc.zhongbao_android.model.PictureModel;
+import com.edu.uestc.zhongbao_android.utils.ImageLoadManager;
 import com.edu.uestc.zhongbao_android.view.ShowImageView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,11 +47,21 @@ public class SportViewHolder {
         ButterKnife.bind(this, view);
     }
 
-    public void setViews(int num) {
+    public void setPictures(List<PictureModel> pictures) {
         imgsBgView.imgUrlList.clear();
-        for (int i=0; i<num; i++) {
-            imgsBgView.imgUrlList.add("hehe"+i);
+        for (int i=0; i<pictures.size(); i++) {
+            imgsBgView.imgUrlList.add(pictures.get(i).picture);
         }
         imgsBgView.layoutImg();
+    }
+
+    public void setViews(String icon, String title, String content, String time, String count, String address, List<PictureModel> pictures) {
+        ImageLoadManager.shareManager().displayImage(Constant.getMainImageUrl()+icon, iconView);
+        timeView.setText(title);
+        contentView.setText(content);
+        timeView.setText(time);
+        commentCountView.setText(count);
+        addressView.setText(address);
+        setPictures(pictures);
     }
 }

@@ -62,6 +62,7 @@ public class LoadMoreListView extends ListView implements AbsListView.OnScrollLi
         removeFooterView(mFooterView);
         setFooterDividersEnabled(false);
         addFooterView(mFooterView);
+        mFooterView.setEnabled(false);
         super.setOnScrollListener(this);
     }
 
@@ -131,10 +132,18 @@ public class LoadMoreListView extends ListView implements AbsListView.OnScrollLi
     }
 
 
-    public void onLoadMoreComplete(){
-//        this.removeFooterView(mFooterView);
-//        mFooterView.setVisibility(GONE);
-        mIsLoadingMore = false;
+    public void onLoadMoreComplete(int type){
+        switch (type) {
+            case 0:
+                setLoadMoreViewTextError();
+                break;
+            case 1:
+                setLoadMoreViewTextNoData();
+                break;
+            default:
+                setLoadMoreViewTextNoMoreData();
+                break;
+        }
     }
 
     public void setLoadMoreViewTextError() {

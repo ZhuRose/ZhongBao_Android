@@ -58,4 +58,13 @@ public class ImageLoadManager {
         imageLoader.loadImage(uri, options, listener);
     }
 
+    public String getCacheSize() throws Exception {
+        long cacheSize = CleanMessageUtil.getFolderSize(imageLoader.getDiskCache().getDirectory());
+        return CleanMessageUtil.getFormatSize(cacheSize);
+    }
+
+    public void clearCache() {
+        imageLoader.clearDiskCache();
+    }
+
 }

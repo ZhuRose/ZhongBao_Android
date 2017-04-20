@@ -30,6 +30,8 @@ public class UserManager {
     private String latitude;
     private String longtitude;
 
+    private String headpicBase64;
+
     public static UserManager shareManager(Context context) {
         if (manager == null) {
             synchronized (UserManager.class) {
@@ -159,5 +161,15 @@ public class UserManager {
     public String getLongtitude() {
         if (longtitude == null) longtitude = preferences.getString("longtitude", "104.06667");
         return longtitude;
+    }
+
+    public void setHeadpicBase64(String headpicBase64) {
+        this.headpicBase64 = headpicBase64;
+        preferences.edit().putString("headpicBase64", headpicBase64).commit();
+    }
+
+    public String getHeadpicBase64() {
+        if (headpicBase64 == null) headpicBase64 = preferences.getString("headpicBase64", "");
+        return headpicBase64;
     }
 }

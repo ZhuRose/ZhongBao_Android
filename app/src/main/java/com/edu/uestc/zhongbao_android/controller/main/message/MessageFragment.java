@@ -3,6 +3,7 @@ package com.edu.uestc.zhongbao_android.controller.main.message;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 public class MessageFragment extends BaseFragment {
 
     @BindView(R.id.refreshView)
-    PtrClassicFrameLayout refreshView;
+    SwipeRefreshLayout refreshView;
 
     @BindView(R.id.list)
     LoadMoreListView listView;
@@ -47,7 +48,6 @@ public class MessageFragment extends BaseFragment {
     List<MessageInfoModel> dataSource;
     int page;
 
-    Handler mHandler;
 
     @Override
     protected int loadLayout() {
@@ -62,22 +62,24 @@ public class MessageFragment extends BaseFragment {
         networkUtil = new NetworkUtil(mActivity) {
             @Override
             public void successNetwork(Object object, String tag) {
-                refreshView.refreshComplete();
-                listView.onLoadMoreComplete();
+                refreshView.setRefreshing(false);
                 MessageModel model = (MessageModel)object;
+                if (page==1) dataSource.clear();
                 if (model.news!=null) {
                     dataSource.addAll(model.news);
                     adapter.notifyDataSetChanged();
+                    listView.onLoadMoreComplete(3);
                 } else {
                     page--;
+                    listView.onLoadMoreComplete(2);
                 }
 
             }
 
             @Override
             public void failedNetwork(String errorInfo, String tag) {
-                refreshView.refreshComplete();
-                listView.onLoadMoreComplete();
+                refreshView.setRefreshing(false);
+                listView.onLoadMoreComplete(1);
             }
         };
     }
@@ -90,31 +92,31 @@ public class MessageFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position>=dataSource.size()) return;
                 MessageInfoModel model = dataSource.get(position);
                 Intent intent = new Intent(mActivity, WebActivity.class);
                 intent.putExtra("url", model.uuid);
                 startActivity(intent);
             }
         });
-        mHandler = new Handler();
         listView.setmOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        listView.setLoadMoreViewTextNoMoreData();
-                    }
-                }, 3000);
-            }
-        });
-        refreshView.setKeepHeaderWhenRefresh(true);
-        refreshView.setPtrHandler(new PtrDefaultHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
+                page++;
                 getResponse();
             }
         });
+        // 设置下拉进度的主题颜色
+        refreshView.setColorSchemeResources(R.color.colorTheme);
+        // 下拉时触发SwipeRefreshLayout的下拉动画，动画完毕之后就会回调这个方法
+        refreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+                getResponse();
+            }
+        });
+
         getResponse();
     }
 

@@ -16,7 +16,7 @@
         app:layout_constraintRight_toRightOf="parent">
     </com.edu.uestc.zhongbao_android.view.BaseNavigationView>
 
-    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </com.edu.uestc.zhongbao_android.view.LoadMoreListView>
-    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </android.support.constraint.ConstraintLayout>

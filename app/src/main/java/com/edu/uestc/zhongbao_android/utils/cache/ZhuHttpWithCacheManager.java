@@ -15,6 +15,7 @@ import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -63,7 +64,10 @@ public class ZhuHttpWithCacheManager {
 
     private ZhuHttpWithCacheManager(Context context) {
         this.context = context;
-        httpClient = new OkHttpClient();
+        httpClient = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
         cacheManager = ZhuCacheManager.getInstance(context);
         gson = new Gson();
     }
@@ -123,11 +127,17 @@ public class ZhuHttpWithCacheManager {
     }
 
     private JsonElement handlerJson(String jsonStr, RequestBlock block) {
-        BaseModel model = gson.fromJson(jsonStr, BaseModel.class);
-        int status = Integer.parseInt(model.status);
-        if (status == 0) block.succeseeBlock(model.data, status);
-        else block.failedBlock(model.errorMsg, status);
-        return model.data;
+        try {
+            BaseModel model = gson.fromJson(jsonStr, BaseModel.class);
+            int status = Integer.parseInt(model.status);
+            if (status == 0) block.succeseeBlock(model.data, status);
+            else block.failedBlock(model.errorMsg, status);
+            return model.data;
+        } catch (Exception e) {
+            block.failedBlock(e.getLocalizedMessage(), -1);
+            return null;
+        }
+
     }
 
     /**

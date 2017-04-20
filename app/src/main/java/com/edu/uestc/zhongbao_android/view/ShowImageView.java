@@ -1,7 +1,10 @@
 package com.edu.uestc.zhongbao_android.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.edu.uestc.zhongbao_android.R;
 import com.edu.uestc.zhongbao_android.application.Constant;
+import com.edu.uestc.zhongbao_android.controller.base.PreviewActivity;
 import com.edu.uestc.zhongbao_android.utils.ImageLoadManager;
 
 import java.util.ArrayList;
@@ -52,6 +56,7 @@ public class ShowImageView extends FrameLayout {
         imgUrlList = new ArrayList<String>();
 
         setupImgView();
+
     }
 
     protected void setupImgView() {
@@ -75,6 +80,16 @@ public class ShowImageView extends FrameLayout {
                 beginx = 0;
                 beginy += height+margin;
             }
+            final int index = i;
+            imgView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), PreviewActivity.class);
+                    intent.putStringArrayListExtra("imgUrlList", (ArrayList<String>) imgUrlList);
+                    intent.putExtra("index", index);
+                    getContext().startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)getContext()).toBundle());
+                }
+            });
         }
     }
 
@@ -101,8 +116,8 @@ public class ShowImageView extends FrameLayout {
             ImageView imgView = imgViews[i];
             if (i<imgUrlList.size()) {
                 imgView.setVisibility(VISIBLE);
-                imgView.setImageResource(R.drawable.home_page);
-//                ImageLoadManager.shareManager().displayImage(imgUrlList.get(i), imgView);
+//                imgView.setImageResource(R.drawable.home_page);
+                ImageLoadManager.shareManager().displayImage(Constant.getMainImageUrl()+imgUrlList.get(i), imgView);
             }
             else imgView.setVisibility(GONE);
         }

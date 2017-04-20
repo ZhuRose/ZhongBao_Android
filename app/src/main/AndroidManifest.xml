@@ -92,6 +92,8 @@
         <activity android:name=".controller.main.sport.detail.SportDetailActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
+        <activity android:name=".controller.base.PreviewActivity"/>
+
     </application>
 
 </manifest>

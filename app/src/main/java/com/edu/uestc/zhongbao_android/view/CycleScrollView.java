@@ -25,10 +25,11 @@ public class CycleScrollView extends ConstraintLayout {
     static String tag = "CycleScrollView";
 
     ViewPager pager;
-    CycleScrollViewIndicators indicators;
+    PageController indicators;
     Handler mhandler;
     List<ImageView> viewList;
     CycleScrollViewPagerAdapter pagerAdapter;
+    CycleScrollViewSingleAdapter singleAdapter;
     CycleScrollViewPagerListener pagerListener;
     CycleScrollViewDataSource dataSource;
     CycleScrollViewDelegate delegate;
@@ -46,26 +47,9 @@ public class CycleScrollView extends ConstraintLayout {
         Log.v(tag,"loading...");
         LayoutInflater.from(context).inflate(R.layout.view_scroll_cycle, this);
         pager = (ViewPager)findViewById(R.id.view_scroll_cycle_pager);
+
         viewList = new ArrayList<ImageView>();
-        pagerAdapter = new CycleScrollViewPagerAdapter();
-        pager.setAdapter(pagerAdapter);
-        pagerListener = new CycleScrollViewPagerListener();
-        pager.addOnPageChangeListener(pagerListener);
-        indicators = (CycleScrollViewIndicators) findViewById(R.id.view_scroll_cycle_indicators);
-        mhandler = new Handler();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        Log.v("tag","detach");
-        mhandler.removeCallbacks(runnable);
-    }
-
-    private void setupPager(Context context) {
-        viewList.clear();
-        int count = (totalPages>1)? 3: totalPages;
-        for (int i=0; i<count; i++) {
+        for (int i=0; i<3; i++) {
             ImageView view = new ImageView(context);
             view.setOnClickListener(new OnClickListener() {
                 @Override
@@ -76,8 +60,35 @@ public class CycleScrollView extends ConstraintLayout {
             view.setScaleType(ImageView.ScaleType.FIT_XY);
             viewList.add(view);
         }
-//        pagerAdapter.notifyDataSetChanged();
-        pager.setAdapter(pagerAdapter);
+
+        pagerAdapter = new CycleScrollViewPagerAdapter();
+        singleAdapter = new CycleScrollViewSingleAdapter();
+        pagerListener = new CycleScrollViewPagerListener();
+        indicators = (PageController) findViewById(R.id.view_scroll_cycle_indicators);
+        setupIndicators();
+        mhandler = new Handler();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.v("tag","detach");
+        mhandler.removeCallbacks(runnable);
+    }
+
+    private void setupPager() {
+        if (totalPages==0) pager.setVisibility(GONE);
+        else {
+            pager.setVisibility(VISIBLE);
+            pager.removeOnPageChangeListener(pagerListener);
+            if (totalPages == 1) {
+                pager.setAdapter(singleAdapter);
+            } else {
+                pager.setAdapter(pagerAdapter);
+                pager.addOnPageChangeListener(pagerListener);
+                pager.setCurrentItem(1, false);
+            }
+        }
     }
 
     public void setAnimationDuration(int animationDuration) {
@@ -113,12 +124,13 @@ public class CycleScrollView extends ConstraintLayout {
     }
 
     public void reload() {
-        haDone = false;
-        totalPages = this.dataSource.numberOfPages();
-        currentPage = 0;
-        setupPager(getContext());
-        if (totalPages>1) pager.setCurrentItem(1, false);
-        setupIndicators();
+        if (totalPages != this.dataSource.numberOfPages()) {
+            haDone = false;
+            totalPages = this.dataSource.numberOfPages();
+            currentPage = 0;
+            setupPager();
+            setupIndicators();
+        }
     }
 
     public int currentPageValue(int value) {
@@ -133,6 +145,32 @@ public class CycleScrollView extends ConstraintLayout {
         return page;
     }
 
+    class CycleScrollViewSingleAdapter extends PagerAdapter {
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {//必须实现，实例化
+            View view = viewList.get(0);
+            dataSource.pageAt(0, (ImageView) view);
+            container.addView(view);
+            return viewList.get(0);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {//必须实现，销毁
+            container.removeView(viewList.get(0));
+        }
+    }
+
     class CycleScrollViewPagerAdapter extends PagerAdapter {
 
         public CycleScrollViewPagerAdapter() {
@@ -141,7 +179,7 @@ public class CycleScrollView extends ConstraintLayout {
 
         @Override
         public int getCount() {//必须实现
-            return viewList.size();
+            return 3;
         }
 
         @Override

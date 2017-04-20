@@ -8,11 +8,13 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.edu.uestc.zhongbao_android.R;
 import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
@@ -32,6 +34,9 @@ import butterknife.BindView;
  */
 
 public class MainActivity extends BaseActivity {
+
+    //退出时的时间
+    private long mExitTime;
 
     private MainBroadcastReceiver broadcastReceiver;
 
@@ -97,6 +102,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Log.v("main", "tap publish");
+                if (!UserManager.shareManager(mContext).getHasLogin()) {
+                    Intent intent = new Intent();
+                    intent.setAction("login");
+                    mContext.sendBroadcast(intent);
+                    return;
+                }
                 startActivity(new Intent(mContext, PublishActivity.class),
                         ActivityOptionsCompat.makeSceneTransitionAnimation(mContext).toBundle());
             }
@@ -128,6 +139,27 @@ public class MainActivity extends BaseActivity {
             Log.v("main", "hahahaha");
 //            Activity activity = ((MainApplication)getApplication()).currentActivity();
             startActivity(new Intent(context, LoginActivity.class));
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次退出订场帝", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+            finishAfterTransition();
+            System.exit(0);
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import com.edu.uestc.zhongbao_android.view.CycleScrollView;
 import com.edu.uestc.zhongbao_android.view.CycleScrollViewDataSource;
 import com.edu.uestc.zhongbao_android.view.CycleScrollViewDelegate;
 import com.edu.uestc.zhongbao_android.view.HomeNavigationView;
+import com.edu.uestc.zhongbao_android.view.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class HomeFragment extends BaseFragment {
     ConstraintLayout menu;
 
     @BindView(R.id.refreshView)
-    PtrClassicFrameLayout refreshView;
+    SwipeRefreshLayout refreshView;
 
     @BindView(R.id.list)
     ListView list;
@@ -93,7 +95,7 @@ public class HomeFragment extends BaseFragment {
         networkUtil = new NetworkUtil(mActivity) {
             @Override
             public void successNetwork(Object object, String tag) {
-                refreshView.refreshComplete();
+                refreshView.setRefreshing(false);
                 HomeModel model = (HomeModel)object;
                 dataSouce = model.result;
                 adapter.notifyDataSetChanged();
@@ -103,7 +105,7 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void failedNetwork(String errorInfo, String tag) {
-                refreshView.refreshComplete();
+                refreshView.setRefreshing(false);
             }
         };
     }
@@ -149,9 +151,14 @@ public class HomeFragment extends BaseFragment {
             public void didSelectItemAt(int index) {
                 BannerInfoModel model = bannerInfos.get(index);
                 if (model.type.equals("0")) {//场馆信息
-                    startActivity(new Intent(mActivity, HomeDetailActivity.class));
+                    Intent intent = new Intent(mActivity, HomeDetailActivity.class);
+                    intent.putExtra("uuid", model.value);
+                    intent.putExtra("pic", model.picture);
+                    startActivity(intent);
                 } else {
-                    startActivity(new Intent(mActivity, WebActivity.class));
+                    Intent intent = new Intent(mActivity, WebActivity.class);
+                    intent.putExtra("url", model.value);
+                    startActivity(intent);
                 }
             }
         });
@@ -236,10 +243,13 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
-        refreshView.setKeepHeaderWhenRefresh(true);
-        refreshView.setPtrHandler(new PtrDefaultHandler() {
+
+        // 设置下拉进度的主题颜色
+        refreshView.setColorSchemeResources(R.color.colorTheme);
+        // 下拉时触发SwipeRefreshLayout的下拉动画，动画完毕之后就会回调这个方法
+        refreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
+            public void onRefresh() {
                 getResponse();
             }
         });

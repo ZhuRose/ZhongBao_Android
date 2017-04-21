@@ -119,6 +119,8 @@ public class LoginActivity extends BaseActivity {
         userEdit.addTextChangedListener(textWatcher);
         pwdEdit.addTextChangedListener(textWatcher);
         loginBtn.setEnabled(false);
+        userEdit.setText("17713574326");
+        pwdEdit.setText("123456");
     }
 
     @Override

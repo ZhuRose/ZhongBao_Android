@@ -13,6 +13,8 @@ import com.google.gson.JsonSyntaxException;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -64,10 +66,7 @@ public class ZhuHttpWithCacheManager {
 
     private ZhuHttpWithCacheManager(Context context) {
         this.context = context;
-        httpClient = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .build();
+        httpClient = new OkHttpClient();
         cacheManager = ZhuCacheManager.getInstance(context);
         gson = new Gson();
     }
@@ -150,6 +149,11 @@ public class ZhuHttpWithCacheManager {
             Map.Entry<String, String> entry = entries.next();
             String key = entry.getKey();
             String value = entry.getValue();
+            try {
+                value = URLEncoder.encode(entry.getValue(), "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             builder.addEncoded(key, value);
         }
         return builder.build();
@@ -183,6 +187,11 @@ public class ZhuHttpWithCacheManager {
             Map.Entry<String, String> entry = entries.next();
             String key = entry.getKey();
             String value = entry.getValue();
+            try {
+                value = URLEncoder.encode(entry.getValue(), "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             builder.append(key+"="+value+"&");
         }
         builder.deleteCharAt(builder.length()-1);

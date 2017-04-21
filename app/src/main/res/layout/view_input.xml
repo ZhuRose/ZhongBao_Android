@@ -8,7 +8,7 @@
     <Button
         android:id="@+id/input_sendBtn"
         android:text="确定"
-        android:textColor="@drawable/text_submit"
+        android:textColor="#fff"
         android:textSize="14sp"
         android:background="@drawable/btn_submit"
         android:layout_width="72dp"

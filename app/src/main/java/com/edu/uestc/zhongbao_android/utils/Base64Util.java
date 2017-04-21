@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Base64;
 
+import com.edu.uestc.zhongbao_android.application.Constant;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -49,16 +51,9 @@ public class Base64Util {
         return bitmapToBase64(bitmap, 100);
     }
 
-    public static Bitmap matrix(Bitmap bitmap) {
-        Matrix matrix = new Matrix();
-        matrix.setScale(0.2f, 0.2f);
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                bitmap.getHeight(), matrix, true);
-    }
 
-    public static Bitmap bestZip(String imagePath) {
+
+    public static Bitmap bestZoom(String imagePath, int limit) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true; // 只获取图片的大小信息，而不是将整张图片载入在内存中，避免内存溢出
         BitmapFactory.decodeFile(imagePath, options);
@@ -66,13 +61,24 @@ public class Base64Util {
         int width= options.outWidth;
         int inSampleSize = 2; // 默认像素压缩比例，压缩为原图的1/2
         int minLen = Math.min(height, width); // 原图的最小边长
-        if(minLen > 100) { // 如果原始图像的最小边长大于100dp（此处单位我认为是dp，而非px）
-            float ratio = (float)minLen / 100.0f; // 计算像素压缩比例
+        if(minLen > limit) { // 如果原始图像的最小边长大于limit
+            float ratio = (float)minLen / (float)limit; // 计算像素压缩比例
             inSampleSize = (int)ratio;
         }
         options.inJustDecodeBounds = false; // 计算好压缩比例后，这次可以去加载原图了
         options.inSampleSize = inSampleSize; // 设置为刚才计算的压缩比例
         Bitmap bm = BitmapFactory.decodeFile(imagePath, options); // 解码文件
+        return bm;
+    }
+
+    public static Bitmap matrixZoom(String imagePath) {
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Matrix matrix = new Matrix();
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        matrix.setScale(0.2f, 0.2f);
+        Bitmap bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
         return bm;
     }
 

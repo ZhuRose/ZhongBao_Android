@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.edu.uestc.zhongbao_android.R;
@@ -18,9 +17,7 @@ import com.edu.uestc.zhongbao_android.application.Constant;
 import com.edu.uestc.zhongbao_android.application.MainApplication;
 import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
 import com.edu.uestc.zhongbao_android.controller.base.BaseDialogFragment;
-import com.edu.uestc.zhongbao_android.controller.login.LoginActivity;
 import com.edu.uestc.zhongbao_android.controller.main.me.info.picker.PickerActivity;
-import com.edu.uestc.zhongbao_android.model.UserModel;
 import com.edu.uestc.zhongbao_android.utils.AndroidBug5497Workaround;
 import com.edu.uestc.zhongbao_android.utils.Base64Util;
 import com.edu.uestc.zhongbao_android.utils.ImageLoadManager;
@@ -32,9 +29,9 @@ import com.edu.uestc.zhongbao_android.view.InputView;
 import com.edu.uestc.zhongbao_android.view.InputViewDelegate;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -120,7 +117,8 @@ public class InfoActivity extends BaseActivity {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 final ImageItem item = images.get(0);
 //                ImageLoadManager.shareManager().displayImage("file:///"+item.path, headView);
-                Bitmap bitmap = Base64Util.bestZip(item.path);
+                int limit = (int)(100*Constant.getDensity(mContext));
+                Bitmap bitmap = Base64Util.bestZoom(item.path, limit);
                 headView.setImageBitmap(bitmap);
                 headpicBase64 = Base64Util.bitmapToBase64(bitmap);
             }

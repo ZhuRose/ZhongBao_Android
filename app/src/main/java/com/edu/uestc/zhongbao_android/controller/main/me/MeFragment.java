@@ -94,7 +94,8 @@ public class MeFragment extends BaseFragment {
 
     public void setupHeadView() {
         if (UserManager.shareManager(mActivity).getHasLogin()) {
-            if (UserManager.shareManager(mActivity).getHeadpicBase64() != "") {
+            if (UserManager.shareManager(mActivity).getHeadpicBase64() != null) {
+//                ImageLoadManager.shareManager().displayImage(Constant.getMainImageUrl()+UserManager.shareManager(mActivity).getHeadpic(), iconView);
                 iconView.setImageBitmap(Base64Util.base64ToBitmap(UserManager.shareManager(mActivity).getHeadpicBase64()));
             } else {
                 ImageLoadManager.shareManager().displayImage(Constant.getMainImageUrl()+UserManager.shareManager(mActivity).getHeadpic(), iconView);

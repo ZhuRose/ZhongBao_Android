@@ -25,6 +25,7 @@ public class ChoseCityActivity extends BaseListActivity {
     ChoseCityAdapter adapter;
 
     public static final int ChoseCityTag = 101;
+    String[] citys = {"成都市", "重庆市", "北京"};
 
     @Override
     protected void initView() {
@@ -36,7 +37,7 @@ public class ChoseCityActivity extends BaseListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.putExtra("city", "城市"+position);
+                intent.putExtra("city", citys[position]);
                 setResult(ChoseCityTag, intent);
                 finishAfterTransition();
             }
@@ -47,7 +48,7 @@ public class ChoseCityActivity extends BaseListActivity {
 
         @Override
         public int getCount() {
-            return 5;
+            return citys.length;
         }
 
         @Override
@@ -72,7 +73,7 @@ public class ChoseCityActivity extends BaseListActivity {
             } else {
                 viewHolder = (BaseViewHolder)convertView.getTag();
             }
-            viewHolder.setTitle("城市城市"+position);
+            viewHolder.setTitle(citys[position]);
             return convertView;
         }
     }

@@ -13,6 +13,12 @@ import com.edu.uestc.zhongbao_android.application.Constant;
 import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
 import com.edu.uestc.zhongbao_android.controller.base.BaseListActivity;
 import com.edu.uestc.zhongbao_android.holder.BaseViewHolder;
+import com.edu.uestc.zhongbao_android.model.CityListModel;
+import com.edu.uestc.zhongbao_android.model.CityNameModel;
+import com.edu.uestc.zhongbao_android.utils.NetworkUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -25,7 +31,27 @@ public class ChoseCityActivity extends BaseListActivity {
     ChoseCityAdapter adapter;
 
     public static final int ChoseCityTag = 101;
-    String[] citys = {"成都市", "重庆市", "北京"};
+    NetworkUtil networkUtil;
+    List<CityNameModel> dataSource;
+
+    @Override
+    protected void initData() {
+        super.initData();
+        dataSource = new ArrayList<CityNameModel>();
+        networkUtil = new NetworkUtil(mContext) {
+            @Override
+            public void successNetwork(Object object, String tag) {
+                CityListModel model = (CityListModel)object;
+                dataSource = model.result;
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void failedNetwork(String errorInfo, String tag) {
+
+            }
+        };
+    }
 
     @Override
     protected void initView() {
@@ -36,19 +62,26 @@ public class ChoseCityActivity extends BaseListActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CityNameModel model = dataSource.get(position);
                 Intent intent = new Intent();
-                intent.putExtra("city", citys[position]);
+                intent.putExtra("city", model.name);
                 setResult(ChoseCityTag, intent);
                 finishAfterTransition();
             }
         });
+
+        getResponse();
+    }
+
+    protected void getResponse() {
+        networkUtil.getCityListNetwork();
     }
 
     class ChoseCityAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return citys.length;
+            return dataSource.size();
         }
 
         @Override
@@ -64,6 +97,7 @@ public class ChoseCityActivity extends BaseListActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             BaseViewHolder viewHolder;
+            CityNameModel model = dataSource.get(position);
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.cell_base, null);
                 ListView.LayoutParams params = new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT,(int)(56* Constant.getDensity(mContext)));
@@ -73,7 +107,7 @@ public class ChoseCityActivity extends BaseListActivity {
             } else {
                 viewHolder = (BaseViewHolder)convertView.getTag();
             }
-            viewHolder.setTitle(citys[position]);
+            viewHolder.setTitle(model.name);
             return convertView;
         }
     }

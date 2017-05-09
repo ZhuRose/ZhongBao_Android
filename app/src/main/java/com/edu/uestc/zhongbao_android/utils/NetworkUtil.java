@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
 import com.edu.uestc.zhongbao_android.controller.base.BaseDialogFragment;
+import com.edu.uestc.zhongbao_android.model.CityListModel;
 import com.edu.uestc.zhongbao_android.model.HomeModel;
 import com.edu.uestc.zhongbao_android.model.MessageModel;
 import com.edu.uestc.zhongbao_android.model.SessionDetailModel;
@@ -29,6 +30,7 @@ public abstract class NetworkUtil {
 
     static final String LOGIN_SUFFIX = "/user/login/";
     static final String HOME_SUFFIX = "/home/";
+    static final String Get_City_List_Suffix = "/citylist/";
     static final String MESSAGE_SUFFIX = "/news/";
     static final String SESSION_DETAIL_SUFFIX = "/detail/";
     static final String SPORTS_CITY_SUFFIX = "/sportscity/list/";
@@ -84,6 +86,31 @@ public abstract class NetworkUtil {
             @Override
             public void succeseeBlock(JsonElement object, int status) {
                 final HomeModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, HomeModel.class);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void getCityListNetwork() {
+        ZhuHttpWithCacheManager.shareManager(activity).postRequestCache(Get_City_List_Suffix, null,new ZhuHttpWithCacheManager.RequestBlock(){
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                final CityListModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, CityListModel.class);
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

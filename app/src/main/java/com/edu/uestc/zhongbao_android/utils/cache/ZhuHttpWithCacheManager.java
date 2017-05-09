@@ -144,6 +144,9 @@ public class ZhuHttpWithCacheManager {
      */
     private RequestBody createBody(Map<String, String> map) {
         FormBody.Builder builder = new FormBody.Builder();
+        if (map == null) {
+            return builder.build();
+        }
         Iterator<Map.Entry<String, String>> entries = map.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<String, String> entry = entries.next();

@@ -99,7 +99,7 @@ public class HomeFragment extends BaseFragment {
                 HomeModel model = (HomeModel)object;
                 dataSouce = model.result;
                 adapter.notifyDataSetChanged();
-                bannerInfos = model.bannerinfos;
+                bannerInfos.addAll(model.bannerinfos);
                 banner.reload();
             }
 
@@ -258,13 +258,13 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        banner.setAnimationDuration(5);
+        banner.setAnimationDuration(3);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        banner.setAnimationDuration(0);
+        banner.setAnimationDuration(0);
     }
 
     class HomeAdapter extends BaseAdapter {

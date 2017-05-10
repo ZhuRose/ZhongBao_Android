@@ -34,9 +34,8 @@ public class CycleScrollView extends ConstraintLayout {
     CycleScrollViewDataSource dataSource;
     CycleScrollViewDelegate delegate;
     int currentPage = 0;
-    int totalPages = 1;
+    int totalPages = 0;
     int animationDuration = 0;
-    boolean haDone = false;
 
     public CycleScrollView(Context context) {
         super(context, null);
@@ -65,7 +64,7 @@ public class CycleScrollView extends ConstraintLayout {
         singleAdapter = new CycleScrollViewSingleAdapter();
         pagerListener = new CycleScrollViewPagerListener();
         indicators = (PageController) findViewById(R.id.view_scroll_cycle_indicators);
-        setupIndicators();
+        pager.setVisibility(GONE);
         mhandler = new Handler();
     }
 
@@ -76,35 +75,10 @@ public class CycleScrollView extends ConstraintLayout {
         mhandler.removeCallbacks(runnable);
     }
 
-    private void setupPager() {
-        if (totalPages==0) pager.setVisibility(GONE);
-        else {
-            pager.setVisibility(VISIBLE);
-            pager.removeOnPageChangeListener(pagerListener);
-            if (totalPages == 1) {
-                pager.setAdapter(singleAdapter);
-            } else {
-                pager.setAdapter(pagerAdapter);
-                pager.addOnPageChangeListener(pagerListener);
-                pager.setCurrentItem(1, false);
-            }
-        }
-    }
-
     public void setAnimationDuration(int animationDuration) {
         this.animationDuration = animationDuration;
         if (animationDuration>0) mhandler.postDelayed(runnable, animationDuration*1000);
         else mhandler.removeCallbacks(runnable);
-
-    }
-
-    private void setupIndicators() {
-        indicators.setTotalPages(this.totalPages, this.currentPage);
-        if (this.totalPages >1) {
-            indicators.setVisibility(VISIBLE);
-        } else  {
-            indicators.setVisibility(GONE);
-        }
     }
 
     private Runnable runnable = new Runnable() {
@@ -124,16 +98,66 @@ public class CycleScrollView extends ConstraintLayout {
     }
 
     public void reload() {
-        if (totalPages != this.dataSource.numberOfPages()) {
-            haDone = false;
-            totalPages = this.dataSource.numberOfPages();
+        mhandler.removeCallbacks(runnable);
+        if (this.dataSource.numberOfPages() == 0) {
+            totalPages = 0;
             currentPage = 0;
-            setupPager();
-            setupIndicators();
+            pager.setVisibility(GONE);
+            indicators.setVisibility(GONE);
+        } else  { //多变少或者少变多
+            boolean adapterChanged = (totalPages>1 != this.dataSource.numberOfPages()>1) || totalPages==0;
+            totalPages = this.dataSource.numberOfPages();
+            currentPage = currentPage%totalPages;
+            pager.setVisibility(VISIBLE);
+            if (animationDuration>0) mhandler.postDelayed(runnable, animationDuration*1000);
+            if (totalPages>1) indicators.setVisibility(VISIBLE);
+            else indicators.setVisibility(GONE);
+            indicators.setTotalPages(this.totalPages, this.currentPage);
+            if (adapterChanged) {
+                pager.removeOnPageChangeListener(pagerListener);
+                if (totalPages == 1) {
+                    pager.setAdapter(singleAdapter);
+                } else {
+                    pager.setAdapter(pagerAdapter);
+                    pager.addOnPageChangeListener(pagerListener);
+                    pager.setCurrentItem(1, false);
+                }
+            } else {
+                if (totalPages>1) {
+                    changeView();
+                } else {
+                    changeSingleView();
+                }
+            }
         }
     }
 
+//    private void setupPager() {
+//        if (totalPages==0) pager.setVisibility(GONE);
+//        else {
+//            pager.setVisibility(VISIBLE);
+//            pager.removeOnPageChangeListener(pagerListener);
+//            if (totalPages == 1) {
+//                pager.setAdapter(singleAdapter);
+//            } else {
+//                pager.setAdapter(pagerAdapter);
+//                pager.addOnPageChangeListener(pagerListener);
+//                pager.setCurrentItem(1, false);
+//            }
+//        }
+//    }
+//
+//    private void setupIndicators() {
+//        indicators.setTotalPages(this.totalPages, this.currentPage);
+//        if (this.totalPages >1) {
+//            indicators.setVisibility(VISIBLE);
+//        } else  {
+//            indicators.setVisibility(GONE);
+//        }
+//    }
+
     public int currentPageValue(int value) {
+        if (totalPages == 0) return 0;
         int page = this.currentPage;
         if (value>0) {
             page ++;
@@ -143,6 +167,18 @@ public class CycleScrollView extends ConstraintLayout {
             if (page < 0) page += this.totalPages;
         }
         return page;
+    }
+
+    public void changeView() {
+        for(int i=0; i<viewList.size(); i++) {
+            ImageView view = viewList.get(i);
+            dataSource.pageAt(currentPageValue(i-1), view);
+        }
+    }
+
+    public void changeSingleView() {
+        ImageView view = viewList.get(0);
+        dataSource.pageAt(0, view);
     }
 
     class CycleScrollViewSingleAdapter extends PagerAdapter {
@@ -206,21 +242,18 @@ public class CycleScrollView extends ConstraintLayout {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             if (totalPages>1) {
-                if ((position + positionOffset)==2.0 && haDone){
+                if ((position + positionOffset)==2.0 ){
                     currentPage = currentPageValue(1);
                     indicators.setCurrentPage(currentPage);
                     changeView();
                     pager.setCurrentItem(1,false);
                     Log.v("tag", "cur"+currentPage);
-
-                } else if ((position + positionOffset)==0.0 && haDone) {
+                } else if ((position + positionOffset)==0.0 ) {
                     currentPage = currentPageValue(-1);
                     indicators.setCurrentPage(currentPage);
                     changeView();
                     pager.setCurrentItem(1,false);
                     Log.v("tag", "pre"+currentPage);
-                } else {
-                    haDone = true;
                 }
             }
         }
@@ -236,19 +269,13 @@ public class CycleScrollView extends ConstraintLayout {
                     mhandler.removeCallbacks(runnable);
                     break;
                 case 2: //up
-                    mhandler.postDelayed(runnable, animationDuration*1000);
+                    if (animationDuration>0) mhandler.postDelayed(runnable, animationDuration*1000);
                     break;
                 default: //end
                     break;
             }
         }
 
-        public void changeView() {
-            for(int i=0; i<viewList.size(); i++) {
-                ImageView view = viewList.get(i);
-                dataSource.pageAt(currentPageValue(i-1), view);
-            }
-        }
     }
 
 }

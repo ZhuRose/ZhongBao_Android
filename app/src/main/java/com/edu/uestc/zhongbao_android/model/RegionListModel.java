@@ -6,6 +6,6 @@ import java.util.List;
  * Created by zhu on 17/5/10.
  */
 
-public class CityListModel {
-    public List<NameModel> result;
+public class RegionListModel {
+    public List<NameModel> districts;
 }

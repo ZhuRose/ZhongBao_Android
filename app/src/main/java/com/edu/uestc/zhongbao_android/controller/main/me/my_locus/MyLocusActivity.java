@@ -10,6 +10,8 @@ import com.edu.uestc.zhongbao_android.controller.base.BaseListActivity;
 import com.edu.uestc.zhongbao_android.holder.LocusViewHolder;
 import com.edu.uestc.zhongbao_android.holder.OrderViewHolder;
 
+import java.util.List;
+
 /**
  * Created by zhu on 17/4/9.
  */

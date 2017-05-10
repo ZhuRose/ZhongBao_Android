@@ -69,7 +69,9 @@ public class HomePagerFragment extends BaseFragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(mActivity, SessionListActivity.class));
+                Intent intent = new Intent(mActivity, SessionListActivity.class);
+                intent.putExtra("sport",position+1);
+                startActivity(intent);
             }
         });
     }

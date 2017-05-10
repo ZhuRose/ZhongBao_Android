@@ -45,6 +45,7 @@ public class PageController extends View {
     public void setTotalPages(int total, int cur) {
         this.totalPages = total;
         this.currentPage = cur;
+        requestLayout();
         invalidate();
     }
 

@@ -85,7 +85,6 @@ public class DropViewMenu extends ConstraintLayout {
         setIsSelected(isSelected);
     }
 
-
     public boolean getIsSelected() {
         return isSelected;
     }

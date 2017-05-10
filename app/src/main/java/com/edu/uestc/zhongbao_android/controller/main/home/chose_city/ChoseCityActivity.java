@@ -10,17 +10,14 @@ import android.widget.ListView;
 
 import com.edu.uestc.zhongbao_android.R;
 import com.edu.uestc.zhongbao_android.application.Constant;
-import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
 import com.edu.uestc.zhongbao_android.controller.base.BaseListActivity;
 import com.edu.uestc.zhongbao_android.holder.BaseViewHolder;
 import com.edu.uestc.zhongbao_android.model.CityListModel;
-import com.edu.uestc.zhongbao_android.model.CityNameModel;
+import com.edu.uestc.zhongbao_android.model.NameModel;
 import com.edu.uestc.zhongbao_android.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * Created by zhu on 17/4/8.
@@ -32,12 +29,12 @@ public class ChoseCityActivity extends BaseListActivity {
 
     public static final int ChoseCityTag = 101;
     NetworkUtil networkUtil;
-    List<CityNameModel> dataSource;
+    List<NameModel> dataSource;
 
     @Override
     protected void initData() {
         super.initData();
-        dataSource = new ArrayList<CityNameModel>();
+        dataSource = new ArrayList<NameModel>();
         networkUtil = new NetworkUtil(mContext) {
             @Override
             public void successNetwork(Object object, String tag) {
@@ -62,7 +59,7 @@ public class ChoseCityActivity extends BaseListActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CityNameModel model = dataSource.get(position);
+                NameModel model = dataSource.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("city", model.name);
                 setResult(ChoseCityTag, intent);
@@ -97,7 +94,7 @@ public class ChoseCityActivity extends BaseListActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             BaseViewHolder viewHolder;
-            CityNameModel model = dataSource.get(position);
+            NameModel model = dataSource.get(position);
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.cell_base, null);
                 ListView.LayoutParams params = new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT,(int)(56* Constant.getDensity(mContext)));

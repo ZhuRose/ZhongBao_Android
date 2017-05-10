@@ -51,8 +51,10 @@ public class HomeDetailActivity extends BaseActivity {
     static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 10086;
     String uuid;
     String pic;
+    boolean isAttention;
 
     NetworkUtil networkUtil;
+    NetworkUtil attentionNetworkUtil;
     SessionDetailModel data;
 
     List<String> dateList;
@@ -62,7 +64,7 @@ public class HomeDetailActivity extends BaseActivity {
     void onClick(Button sender) {
         switch (sender.getId()) {
             case R.id.collectionBtn:
-                sender.setSelected(!sender.isSelected());
+                attentionSession();
                 break;
             default:
                 ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(mContext, mainView, "share");
@@ -174,7 +176,8 @@ public class HomeDetailActivity extends BaseActivity {
             public void successNetwork(Object object, String tag) {
                 data = (SessionDetailModel)object;
                 navi.setTitle(data.name);
-                collectionBtn.setSelected(data.attention.equals("0"));
+                isAttention = data.attention.equals("0");
+                collectionBtn.setSelected(isAttention);
                 sportAndTimeBtn.setText(data.sport+"("+data.service_time+")");
                 scoreView.setText(data.score);
                 addressView.setText(data.address);
@@ -214,7 +217,24 @@ public class HomeDetailActivity extends BaseActivity {
 
             }
         };
-        getResponse();
+
+        attentionNetworkUtil = new NetworkUtil(mContext) {
+            @Override
+            public void successNetwork(Object object, String tag) {
+                isAttention = !isAttention;
+                collectionBtn.setSelected(isAttention);
+                BaseDialogFragment.showSuccess(getSupportFragmentManager(), isAttention?"收藏成功":"取消成功");
+            }
+
+            @Override
+            public void failedNetwork(String errorInfo, String tag) {
+
+            }
+        };
+    }
+
+    protected void attentionSession() {
+        attentionNetworkUtil.attentionSessionNetwork(uuid, isAttention?"0":"1");
     }
 
     protected void getResponse() {
@@ -230,6 +250,7 @@ public class HomeDetailActivity extends BaseActivity {
         picButton.setHeight(picHeight);
         setupScroller();
         setupRecycler();
+        getResponse();
     }
 
     @TargetApi(Build.VERSION_CODES.M)

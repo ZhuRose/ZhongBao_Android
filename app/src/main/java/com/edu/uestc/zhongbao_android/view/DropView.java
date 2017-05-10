@@ -29,6 +29,7 @@ import java.util.List;
 public class DropView extends ConstraintLayout {
 
     protected DropViewDataSource dataSource;
+    protected DropViewDelegate delegate;
 
     protected FrameLayout contentFrame;
     protected FrameLayout coverFrame;
@@ -77,6 +78,20 @@ public class DropView extends ConstraintLayout {
                 return true;
             }
         });
+    }
+
+    public void reload() {
+        dataList.clear();
+        for (int i=0; i<totalMenus; i++) {
+            titleArr[i] = dataSource.titleForMenu(i);
+            dataList.add(dataSource.dataSorceIn(i));
+            DropViewMenu menu = menuArr[i];
+            menu.setIsSelected(false, titleArr[i]);
+        }
+    }
+
+    public void setDelegate(DropViewDelegate delegate) {
+        this.delegate = delegate;
     }
 
     public void setDataSource(DropViewDataSource dataSource) {
@@ -131,6 +146,7 @@ public class DropView extends ConstraintLayout {
                     adapter.notifyDataSetChanged();
                     stopAnimation();
                 }
+                if (delegate != null) delegate.didSelectItemWith(selectedArr);
             }
         });
     }

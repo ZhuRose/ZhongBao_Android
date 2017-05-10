@@ -1,9 +1,11 @@
 package com.edu.uestc.zhongbao_android.controller.base;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
 import com.edu.uestc.zhongbao_android.R;
 import com.edu.uestc.zhongbao_android.view.BaseNavigationView;
+import com.edu.uestc.zhongbao_android.view.LoadMoreListView;
 
 import butterknife.BindView;
 
@@ -15,10 +17,11 @@ public class BaseListActivity extends BaseActivity {
     @BindView(R.id.navi)
     protected BaseNavigationView navi;
 
-    @BindView(R.id.list)
-    protected ListView list;
+    @BindView(R.id.refreshView)
+    protected SwipeRefreshLayout refreshView;
 
-    protected int page;
+    @BindView(R.id.list)
+    protected LoadMoreListView list;
 
     @Override
     protected int loadLayout() {

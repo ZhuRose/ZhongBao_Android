@@ -1,8 +1,10 @@
 package com.edu.uestc.zhongbao_android.controller.base;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
 import com.edu.uestc.zhongbao_android.R;
+import com.edu.uestc.zhongbao_android.view.LoadMoreListView;
 
 import butterknife.BindView;
 
@@ -12,8 +14,11 @@ import butterknife.BindView;
 
 public class BaseListFragment extends BaseFragment {
 
+    @BindView(R.id.refreshView)
+    protected SwipeRefreshLayout refreshView;
+
     @BindView(R.id.list)
-    protected ListView list;
+    protected LoadMoreListView list;
 
     @Override
     protected int loadLayout() {

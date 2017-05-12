@@ -57,7 +57,7 @@ public class SportViewHolder {
 
     public void setViews(String icon, String title, String content, String time, String count, String address, List<PictureModel> pictures) {
         ImageLoadManager.shareManager().displayImage(Constant.getMainImageUrl()+icon, iconView);
-        timeView.setText(title);
+        titleView.setText(title);
         contentView.setText(content);
         timeView.setText(time);
         commentCountView.setText(count);

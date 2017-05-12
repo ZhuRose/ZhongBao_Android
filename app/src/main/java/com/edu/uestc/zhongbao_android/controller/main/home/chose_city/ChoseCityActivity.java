@@ -1,6 +1,7 @@
 package com.edu.uestc.zhongbao_android.controller.main.home.chose_city;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.edu.uestc.zhongbao_android.holder.BaseViewHolder;
 import com.edu.uestc.zhongbao_android.model.CityListModel;
 import com.edu.uestc.zhongbao_android.model.NameModel;
 import com.edu.uestc.zhongbao_android.utils.NetworkUtil;
+import com.edu.uestc.zhongbao_android.view.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +40,17 @@ public class ChoseCityActivity extends BaseListActivity {
         networkUtil = new NetworkUtil(mContext) {
             @Override
             public void successNetwork(Object object, String tag) {
+                refreshView.setRefreshing(false);
                 CityListModel model = (CityListModel)object;
                 dataSource = model.result;
                 adapter.notifyDataSetChanged();
+                list.onLoadMoreComplete(2);
             }
 
             @Override
             public void failedNetwork(String errorInfo, String tag) {
-
+                refreshView.setRefreshing(false);
+                list.onLoadMoreComplete(1);
             }
         };
     }
@@ -66,7 +71,22 @@ public class ChoseCityActivity extends BaseListActivity {
                 finishAfterTransition();
             }
         });
-
+        list.setLoadMoreViewTextNoData();
+        list.setmOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                getResponse();
+            }
+        });
+        // 设置下拉进度的主题颜色
+        refreshView.setColorSchemeResources(R.color.colorTheme);
+        // 下拉时触发SwipeRefreshLayout的下拉动画，动画完毕之后就会回调这个方法
+        refreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getResponse();
+            }
+        });
         getResponse();
     }
 

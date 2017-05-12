@@ -4,6 +4,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import com.edu.uestc.zhongbao_android.R;
 import com.edu.uestc.zhongbao_android.application.Constant;
 import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
+import com.edu.uestc.zhongbao_android.controller.base.BaseDialogFragment;
 import com.edu.uestc.zhongbao_android.controller.main.home.detail.all_comments.AllCommentsActivity;
 import com.edu.uestc.zhongbao_android.holder.CommentViewHolder;
 import com.edu.uestc.zhongbao_android.holder.SportCommentViewHolder;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnTouch;
 
 /**
  * Created by zhu on 17/4/11.
@@ -53,11 +56,20 @@ public class SportDetailActivity extends BaseActivity {
     LoadMoreListView listView;
 
     NetworkUtil networkUtil;
+    NetworkUtil replyNetwork;
     List<SportsCityCommentsDetailModel> dataSource;
     int page;
 
     @BindView(R.id.inputView)
     InputView inputView;
+
+    @OnTouch(R.id.contentLayout)
+    public boolean touch(View view, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            inputView.hideKeyBoard();
+        }
+        return true;
+    }
 
     @Override
     protected int loadLayout() {
@@ -85,6 +97,8 @@ public class SportDetailActivity extends BaseActivity {
             @Override
             public void getInputContent(String content, String tag) {
                 inputView.hideKeyBoard();
+                BaseDialogFragment.showLoading(getSupportFragmentManager());
+                replyNetwork.sportsCityReplyNetwork(uuid, content);
                 inputView.setEditText("", "请输入评论");
             }
         });
@@ -154,6 +168,20 @@ public class SportDetailActivity extends BaseActivity {
             public void failedNetwork(String errorInfo, String tag) {
                 refreshView.setRefreshing(false);
                 listView.onLoadMoreComplete(1);
+            }
+        };
+
+        replyNetwork = new NetworkUtil(mContext) {
+            @Override
+            public void successNetwork(Object object, String tag) {
+                BaseDialogFragment.showSuccess(getSupportFragmentManager(), "评论成功");
+                page = 1;
+                getResponse();
+            }
+
+            @Override
+            public void failedNetwork(String errorInfo, String tag) {
+                BaseDialogFragment.showFailed(getSupportFragmentManager(), errorInfo);
             }
         };
     }

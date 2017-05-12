@@ -94,6 +94,9 @@
 
         <activity android:name=".controller.base.PreviewActivity"/>
 
+        <activity android:name=".controller.main.home.search.SearchActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
     </application>
 
 </manifest>

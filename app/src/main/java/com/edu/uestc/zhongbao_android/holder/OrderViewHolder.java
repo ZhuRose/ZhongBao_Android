@@ -7,8 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edu.uestc.zhongbao_android.R;
+import com.edu.uestc.zhongbao_android.application.Constant;
 import com.edu.uestc.zhongbao_android.controller.main.home.detail.chose_site.order_detail.OrderDetailActivity;
 import com.edu.uestc.zhongbao_android.controller.main.me.my_orders.comment.CommentActivity;
+import com.edu.uestc.zhongbao_android.model.SportTimeModel;
+import com.edu.uestc.zhongbao_android.utils.ImageLoadManager;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +27,7 @@ public class OrderViewHolder {
 
     int status;
     View itemView;
+    String uuid;
 
     @BindView(R.id.iconView)
     ImageView iconView;
@@ -43,17 +49,23 @@ public class OrderViewHolder {
 
     @OnClick(R.id.actionBtn)
     void onClick(View view) {
+        Intent intent = null;
         switch (status) {
             case 0:
-                itemView.getContext().startActivity(new Intent(itemView.getContext(), OrderDetailActivity.class));
+                intent = new Intent(itemView.getContext(), OrderDetailActivity.class);
                 break;
             case 1:
-                itemView.getContext().startActivity(new Intent(itemView.getContext(), OrderDetailActivity.class));
+                intent = new Intent(itemView.getContext(), OrderDetailActivity.class);
+                break;
+            case 2:
+                intent = new Intent(itemView.getContext(), CommentActivity.class);
                 break;
             default:
-                itemView.getContext().startActivity(new Intent(itemView.getContext(), CommentActivity.class));
                 break;
         }
+        intent.putExtra("uuid", uuid);
+        intent.putExtra("status", status);
+        itemView.getContext().startActivity(intent);
     }
 
     public OrderViewHolder(View view) {
@@ -61,13 +73,16 @@ public class OrderViewHolder {
         ButterKnife.bind(this, view);
     }
 
-    public void setViews(String iconStr, String title, String price, int status, String time) {
+    public void setViews(String iconStr, String title, String price, int status, String time, String uuid) {
+        ImageLoadManager.shareManager().displayImage(Constant.getMainImageUrl()+iconStr, iconView);
         titleView.setText(title);
         priceView.setText("¥ "+price);
         timeView.setText(time);
         this.status = status;
+        this.uuid = uuid;
         String statusStr = "";
         String actionStr = "";
+        actionButton.setVisibility(View.VISIBLE);
         switch (status) {
             case 0:
                 statusStr = "待付款";
@@ -77,9 +92,14 @@ public class OrderViewHolder {
                 statusStr = "待消费";
                 actionStr = "订单详情";
                 break;
-            default:
+            case  2:
                 statusStr = "待评价";
                 actionStr = "立即评价";
+                break;
+            default:
+                statusStr = "退款中";
+                actionStr = "";
+                actionButton.setVisibility(View.GONE);
                 break;
         }
         statusView.setText(statusStr);

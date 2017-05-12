@@ -155,6 +155,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp">
                     <TextView
+                        android:id="@+id/timeListView"
                         android:text="time\ntime2\ntime3"
                         android:textSize="14sp"
                         android:textAlignment="center"
@@ -162,6 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/numberListView"
                         android:text="number"
                         android:textSize="14sp"
                         android:textAlignment="center"
@@ -169,6 +171,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/priceListView"
                         android:text="price"
                         android:textSize="14sp"
                         android:textAlignment="center"
@@ -186,6 +189,7 @@
                 android:background="#fff"
                 android:layout_marginTop="10dp">
                 <TextView
+                    android:id="@+id/orderName"
                     android:text="订单号:"
                     android:textColor="#000"
                     android:textSize="16sp"
@@ -202,13 +206,15 @@
                     android:text="2eewfdsf"
                     android:textColor="#000"
                     android:textSize="16sp"
-                    android:layout_width="wrap_content"
+                    android:textAlignment="textStart"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp" />
+                    app:layout_constraintLeft_toRightOf="@id/orderName"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="24dp" />
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
@@ -218,6 +224,7 @@
                 android:background="#fff"
                 android:layout_marginTop="1dp">
                 <TextView
+                    android:id="@+id/pwdName"
                     android:text=" 密  码 :"
                     android:textColor="#000"
                     android:textSize="16sp"
@@ -234,13 +241,15 @@
                     android:text="2eewfdsf"
                     android:textColor="#000"
                     android:textSize="16sp"
-                    android:layout_width="wrap_content"
+                    android:textAlignment="textStart"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp" />
+                    app:layout_constraintLeft_toRightOf="@+id/pwdName"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="24dp" />
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
@@ -250,6 +259,7 @@
                 android:background="#fff"
                 android:layout_marginTop="10dp">
                 <TextView
+                    android:id="@+id/phoneName"
                     android:text="手机号:"
                     android:textColor="#000"
                     android:textSize="16sp"
@@ -269,16 +279,17 @@
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textCursorDrawable="@drawable/cursor"
-                    android:textAlignment="viewEnd"
+                    android:textAlignment="viewStart"
                     android:textColor="#000"
                     android:textSize="16sp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp" />
+                    app:layout_constraintLeft_toRightOf="@id/phoneName"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="24dp" />
             </android.support.constraint.ConstraintLayout>
 
 
@@ -290,6 +301,7 @@
                 android:background="#fff"
                 android:layout_marginTop="1dp">
                 <TextView
+                    android:id="@+id/contactName"
                     android:text="联系人:"
                     android:textColor="#000"
                     android:textSize="16sp"
@@ -309,16 +321,17 @@
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textCursorDrawable="@drawable/cursor"
-                    android:textAlignment="viewEnd"
+                    android:textAlignment="viewStart"
                     android:textColor="#000"
                     android:textSize="16sp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp" />
+                    app:layout_constraintLeft_toRightOf="@id/contactName"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="24dp" />
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout

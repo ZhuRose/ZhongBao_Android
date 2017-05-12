@@ -281,12 +281,15 @@ public class HomeDetailActivity extends BaseActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ReserveViewHolder viewHolder = (ReserveViewHolder)holder;
             viewHolder.setViews(weekList.get(position), dateList.get(position), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mContext, ChoseSiteActivity.class));
+                    Intent intent = new Intent(mContext, ChoseSiteActivity.class);
+                    intent.putExtra("uuid", uuid);
+                    intent.putExtra("position", position);
+                    startActivity(intent);
                 }
             });
         }

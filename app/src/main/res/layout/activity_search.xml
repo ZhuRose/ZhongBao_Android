@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBack"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.edu.uestc.zhongbao_android.view.BaseNavigationView
+        android:id="@+id/navi"
+        android:layout_width="0dp"
+        android:layout_height="77dp"
+        app:navigationtitle="搜索"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </com.edu.uestc.zhongbao_android.view.BaseNavigationView>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/midView"
+        android:layout_width="0dp"
+        android:layout_height="66dp"
+        app:layout_constraintTop_toBottomOf="@id/navi"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/searchBtn"
+            android:background="@drawable/btn_submit"
+            android:text="搜索"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:layout_width="72dp"
+            android:layout_height="42dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="12dp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            app:cardBackgroundColor="#ffffff"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="0px"
+            app:cardMaxElevation="2px"
+            app:cardUseCompatPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/searchBtn"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp">
+
+            <ImageView
+                android:src="@drawable/search_gray_icon"
+                android:scaleType="fitXY"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"/>
+
+            <EditText
+                android:id="@+id/searchEdit"
+                android:hint="搜索 场馆、地点、运动"
+                android:background="@null"
+                android:textColor="@color/colorText"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:textCursorDrawable="@drawable/cursor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="38dp"
+                android:layout_marginRight="12dp"/>
+
+        </android.support.v7.widget.CardView>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/midView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <com.edu.uestc.zhongbao_android.view.LoadMoreListView
+            android:id="@+id/resultList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.edu.uestc.zhongbao_android.view.LoadMoreListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <ListView
+        android:id="@+id/recordList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/midView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </ListView>
+    
+
+</android.support.constraint.ConstraintLayout>

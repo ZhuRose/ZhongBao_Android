@@ -45,7 +45,7 @@ public class StarCommentView extends LinearLayout {
         }
     }
 
-    protected void setStarsFromGrades(float touchGrades) {
+    public void setStarsFromGrades(float touchGrades) {
         grades = 0;
         for(int i=0; i<5; i++) {
             ImageView starView = starViews[i];

@@ -21,6 +21,7 @@ import com.edu.uestc.zhongbao_android.application.Constant;
 import com.edu.uestc.zhongbao_android.controller.base.BaseFragment;
 import com.edu.uestc.zhongbao_android.controller.main.home.chose_city.ChoseCityActivity;
 import com.edu.uestc.zhongbao_android.controller.main.home.detail.HomeDetailActivity;
+import com.edu.uestc.zhongbao_android.controller.main.home.search.SearchActivity;
 import com.edu.uestc.zhongbao_android.controller.main.message.detail.WebActivity;
 import com.edu.uestc.zhongbao_android.holder.HomeViewHolder;
 import com.edu.uestc.zhongbao_android.model.BannerInfoModel;
@@ -127,6 +128,12 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(mActivity, ChoseCityActivity.class), LocationTag);
+            }
+        });
+        navi.setSearchViewClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, SearchActivity.class));
             }
         });
     }

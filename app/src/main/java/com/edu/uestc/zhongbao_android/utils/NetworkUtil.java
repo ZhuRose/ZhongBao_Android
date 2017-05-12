@@ -3,16 +3,22 @@ package com.edu.uestc.zhongbao_android.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
 import com.edu.uestc.zhongbao_android.controller.base.BaseDialogFragment;
+import com.edu.uestc.zhongbao_android.model.ChoseSiteModel;
 import com.edu.uestc.zhongbao_android.model.CityListModel;
 import com.edu.uestc.zhongbao_android.model.HomeModel;
 import com.edu.uestc.zhongbao_android.model.MessageModel;
+import com.edu.uestc.zhongbao_android.model.OrderDetailModel;
+import com.edu.uestc.zhongbao_android.model.OrderListModel;
+import com.edu.uestc.zhongbao_android.model.OrderModel;
 import com.edu.uestc.zhongbao_android.model.RegionListModel;
 import com.edu.uestc.zhongbao_android.model.SessionDetailModel;
 import com.edu.uestc.zhongbao_android.model.SportsCityCommentsModel;
 import com.edu.uestc.zhongbao_android.model.SportsCityModel;
+import com.edu.uestc.zhongbao_android.model.TrackListModel;
 import com.edu.uestc.zhongbao_android.model.UserModel;
 import com.edu.uestc.zhongbao_android.utils.cache.ZhuHttpWithCacheManager;
 import com.google.gson.JsonElement;
@@ -34,16 +40,21 @@ public abstract class NetworkUtil {
     static final String Search_SUFFIX = "/search/";
     static final String Get_City_List_Suffix = "/citylist/";
     static final String Get_Region_List_Suffix = "/search/get_region/";
-    static final String MESSAGE_SUFFIX = "/news/";
     static final String SESSION_DETAIL_SUFFIX = "/detail/";
+    static final String Comment_Suffix = "/comment/send/";
     static final String Attentin_SESSION_SUFFIX = "/user/attention/";
+    static final String Reverse_Suffix = "/reverse/";
+    static final String MESSAGE_SUFFIX = "/news/";
     static final String PUBLISH_SPORTS_CITY_SUFFIX = "/sportscity/add/";
     static final String SPORTS_CITY_SUFFIX = "/sportscity/list/";
     static final String SPORTS_CITY_COMMENTS_SUFFIX = "/sportscity/detail/";
+    static final String SPORTS_CITY_REPLY_SUFFIX = "/sportscity/reply/add/";
+    static final String Me_Orders_Suffix = "/user/myorders/";
     static final String Me_Track_Suffix = "/user/track/";
     static final String Me_Attention_Suffix = "/user/myattention/";
     static final String Feedback_Suffix = "/user/feedback/";
     static final String SAVE_PERSON_INFO_SUFFIX = "/user/save_myinfo_detail/";
+    static final String Order_Detail_SUFFIX = "/reverse/detail/";
 
     Activity activity;
     String tag;
@@ -91,6 +102,40 @@ public abstract class NetworkUtil {
         map.put("latitude", UserManager.shareManager(activity).getLatitude());
         map.put("longtitude", UserManager.shareManager(activity).getLongtitude());
         ZhuHttpWithCacheManager.shareManager(activity).postRequestCache(HOME_SUFFIX, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                final HomeModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, HomeModel.class);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void searchNetwork(String page, String keyword) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("page", page);
+        map.put("keyword", keyword);
+        map.put("region","");
+        map.put("sport","");
+        map.put("sort","0");
+        map.put("city", UserManager.shareManager(activity).getCity());
+        map.put("latitude", UserManager.shareManager(activity).getLatitude());
+        map.put("longtitude", UserManager.shareManager(activity).getLongtitude());
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(Search_SUFFIX, map, new ZhuHttpWithCacheManager.RequestBlock() {
             @Override
             public void succeseeBlock(JsonElement object, int status) {
                 final HomeModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, HomeModel.class);
@@ -256,6 +301,66 @@ public abstract class NetworkUtil {
         });
     }
 
+    public void reserveNetwork(String uuid, String date) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("date", date);
+        map.put("uuid", uuid);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(Reverse_Suffix, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                final ChoseSiteModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, ChoseSiteModel.class);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void commentNetwork(String uuid, String priceScore, String environmentScore, String serviceScore, String trafficScore, String content) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("token", UserManager.shareManager(activity).getToken());
+        map.put("uuid", uuid);
+        map.put("price_score", priceScore);
+        map.put("environment_score", environmentScore);
+        map.put("service_score",serviceScore);
+        map.put("traffic_score", trafficScore);
+        map.put("content", content);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(Comment_Suffix, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(null, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
     public void messageNetwork(String page) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("page", page);
@@ -369,6 +474,35 @@ public abstract class NetworkUtil {
         });
     }
 
+    public void sportsCityReplyNetwork(String uuid, String content) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("token", UserManager.shareManager(activity).getToken());
+        map.put("uuid", uuid);
+        map.put("content",content);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(SPORTS_CITY_REPLY_SUFFIX, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(null, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+
+    }
+
     public void savePersonInfoNetwork(String nickname, String sex, String birthday, String headpic) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("token", UserManager.shareManager(activity).getToken());
@@ -399,6 +533,36 @@ public abstract class NetworkUtil {
         });
     }
 
+    public void myOrdersNetwork(String classify, String page) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("token", UserManager.shareManager(activity).getToken());
+        map.put("classify", classify);
+        map.put("page", page);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequestCache(Me_Orders_Suffix, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                final OrderListModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, OrderListModel.class);
+                Log.v("network", "含有"+model.orders.size());
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
     public void myTrackNetwork(String page) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("token", UserManager.shareManager(activity).getToken());
@@ -406,12 +570,23 @@ public abstract class NetworkUtil {
         ZhuHttpWithCacheManager.shareManager(activity).postRequestCache(Me_Track_Suffix, map, new ZhuHttpWithCacheManager.RequestBlock() {
             @Override
             public void succeseeBlock(JsonElement object, int status) {
-
+                final TrackListModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, TrackListModel.class);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
+                    }
+                });
             }
 
             @Override
-            public void failedBlock(String errorInfo, int status) {
-
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
             }
         });
     }
@@ -456,6 +631,34 @@ public abstract class NetworkUtil {
                     @Override
                     public void run() {
                         successNetwork(null, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void orderDetailNetwork(String uuid) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("token", UserManager.shareManager(activity).getToken());
+        map.put("uuid", uuid);
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(Order_Detail_SUFFIX, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                final OrderDetailModel model = ZhuHttpWithCacheManager.shareManager(activity).fromJson(object, OrderDetailModel.class);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(model, tag);
                     }
                 });
             }

@@ -11,13 +11,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.edu.uestc.zhongbao_android.R;
 import com.edu.uestc.zhongbao_android.controller.base.BaseActivity;
+import com.edu.uestc.zhongbao_android.controller.base.BaseDialogFragment;
 import com.edu.uestc.zhongbao_android.controller.main.home.detail.chose_site.order_detail.OrderDetailActivity;
 import com.edu.uestc.zhongbao_android.holder.SetNumViewHolder;
 import com.edu.uestc.zhongbao_android.holder.SetPriceViewHolder;
 import com.edu.uestc.zhongbao_android.holder.WeekViewHolder;
+import com.edu.uestc.zhongbao_android.model.ChoseSiteModel;
+import com.edu.uestc.zhongbao_android.model.SitePriceModel;
+import com.edu.uestc.zhongbao_android.utils.DateUtil;
+import com.edu.uestc.zhongbao_android.utils.NetworkUtil;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,12 +45,26 @@ public class ChoseSiteActivity extends BaseActivity {
 
     WeekAdapter weekAdapter;
 
+    String uuid;
     int curSelected;
     WeekViewHolder curWeekViewHolder;
+
+    List<String> dateList;
+    List<String> weekList;
+
+    NetworkUtil networkUtil;
+    String curDate;
+    List<SitePriceModel> dataSource;
+    int column;
+    float totalPrice;
+    Set<Integer> priceArr;
 
     @BindView(R.id.setRecycler)
     RecyclerView setRecycler;
     SetAdapter setAdapter;
+
+    @BindView(R.id.priceView)
+    TextView priceView;
 
     @OnClick(R.id.paymentBtn)
     void paymentButtonClick(View sender) {
@@ -53,7 +79,31 @@ public class ChoseSiteActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        curSelected = 0;
+        uuid = getIntent().getStringExtra("uuid");
+        curSelected = getIntent().getIntExtra("position", 0);
+        dateList = DateUtil.get7date();
+        weekList = DateUtil.get7week();
+        curDate = dateList.get(curSelected);
+        totalPrice = 0.00f;
+        priceArr = new HashSet<Integer>();
+        column = 0;
+        dataSource = new ArrayList<SitePriceModel>();
+        networkUtil = new NetworkUtil(mContext) {
+            @Override
+            public void successNetwork(Object object, String tag) {
+                BaseDialogFragment.dismissDialog();
+                ChoseSiteModel model = (ChoseSiteModel)object;
+                dataSource.clear();
+                dataSource.addAll(model.info);
+                column = Integer.parseInt(model.column);
+                setAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void failedNetwork(String errorInfo, String tag) {
+                BaseDialogFragment.showFailed(getSupportFragmentManager(), "网络错误");
+            }
+        };
     }
 
     @Override
@@ -77,6 +127,19 @@ public class ChoseSiteActivity extends BaseActivity {
         setRecycler.setLayoutManager(glm);
         setAdapter = new SetAdapter();
         setRecycler.setAdapter(setAdapter);
+
+        getResponse();
+    }
+
+    protected void getResponse() {
+        BaseDialogFragment.showLoading(getSupportFragmentManager());
+        networkUtil.reserveNetwork(uuid, curDate);
+    }
+
+    protected String getFormatPriceStr() {
+        DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        if (totalPrice>0.0f) return decimalFormat.format(totalPrice);//format 返回的是字符串
+        else return "0.00";
     }
 
     class WeekAdapter extends RecyclerView.Adapter {
@@ -96,6 +159,7 @@ public class ChoseSiteActivity extends BaseActivity {
                 curWeekViewHolder = viewHolder;
             }
             else viewHolder.setIsSelected(false);
+            viewHolder.setViews(weekList.get(position), dateList.get(position));
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,6 +168,11 @@ public class ChoseSiteActivity extends BaseActivity {
                         viewHolder.setIsSelected(true);
                         curWeekViewHolder = viewHolder;
                         curSelected = position;
+                        priceArr.clear();
+                        totalPrice = 0.0f;
+                        priceView.setText(getFormatPriceStr());
+                        curDate = dateList.get(position);
+                        getResponse();
                     }
 
                 }
@@ -180,13 +249,26 @@ public class ChoseSiteActivity extends BaseActivity {
                 numViewHolder.setNum(position/25 +1);
             } else {
                 SetPriceViewHolder priceViewHolder = (SetPriceViewHolder)holder;
-                boolean enable = position%7 == 0? false :true;
-                priceViewHolder.setViews(""+position, enable);
+                int currentColumn = (int)(position/25);
+                int currentRow = (int)(position%25) - 1;
+                int currentIndex = (int)(column * currentRow) + currentColumn;
+                SitePriceModel model = dataSource.get(currentIndex);
+                priceViewHolder.setViews(model.price, model.state.equals("0"));
                 final SetPriceViewHolder viewHolder = priceViewHolder;
+                final float setPrice = Float.parseFloat(model.price);
+                final int setNum = Integer.parseInt(model.number);
                 priceViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         viewHolder.setIsSelected(!viewHolder.getIsSelected());
+                        if (viewHolder.getIsSelected()) {
+                            priceArr.add(setNum);
+                            totalPrice += setPrice;
+                        } else {
+                            priceArr.remove(setNum);
+                            totalPrice -= setPrice;
+                        }
+                        priceView.setText(getFormatPriceStr());
                     }
                 });
             }
@@ -200,7 +282,7 @@ public class ChoseSiteActivity extends BaseActivity {
 
         @Override
         public int getItemCount() {
-            return 250;
+            return dataSource.size()+column;
         }
 
     }

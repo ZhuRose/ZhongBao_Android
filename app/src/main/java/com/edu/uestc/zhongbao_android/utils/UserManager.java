@@ -5,6 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Created by zhu on 17/4/12.
  */
@@ -31,6 +36,8 @@ public class UserManager {
     private String longtitude;
 
     private String headpicBase64;
+
+    private int recordCount;
 
     public static UserManager shareManager(Context context) {
         if (manager == null) {
@@ -171,5 +178,26 @@ public class UserManager {
     public String getHeadpicBase64() {
         if (headpicBase64 == null) headpicBase64 = preferences.getString("headpicBase64", "");
         return headpicBase64;
+    }
+
+    public void clearSearchRecord() {
+        this.recordCount = 0;
+        preferences.edit().putInt("recordCount", 0).commit();
+    }
+
+    public void setSearchRecord(List<String> searchRecord) {
+        this.recordCount = searchRecord.size();
+        preferences.edit().putInt("recordCount", recordCount).commit();
+        for (int i=0; i<recordCount; i++) {
+            preferences.edit().putString("record"+i, searchRecord.get(i)).commit();
+        }
+    }
+
+    public List<String> getSearchRecord() {
+        List<String> searchRecord = new ArrayList<String>();
+        for (int i=0; i<recordCount; i++) {
+            searchRecord.add(preferences.getString("record"+i, ""));
+        }
+        return searchRecord;
     }
 }

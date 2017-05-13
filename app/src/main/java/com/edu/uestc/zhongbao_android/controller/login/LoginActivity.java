@@ -7,8 +7,10 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 /**
  * Created by zhu on 17/4/1.
@@ -47,6 +50,16 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.loginBtn)
     Button loginBtn;
+
+    @OnTouch(R.id.contentLayout)
+    public boolean touch(View view, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(userEdit.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(pwdEdit.getWindowToken(), 0);
+        }
+        return true;
+    }
 
     @OnClick(R.id.loginBtn)
     void loginButtonClick(Button sender) {

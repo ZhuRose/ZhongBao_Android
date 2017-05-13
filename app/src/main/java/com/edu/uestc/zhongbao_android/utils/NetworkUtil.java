@@ -36,6 +36,8 @@ public abstract class NetworkUtil {
     public abstract void failedNetwork(String errorInfo, String tag);
 
     static final String LOGIN_SUFFIX = "/user/login/";
+    static final String Get_Vari_Suffix = "/user/get_vari/";
+    static final String Register_Suffix = "/user/regist/";
     static final String HOME_SUFFIX = "/home/";
     static final String Search_SUFFIX = "/search/";
     static final String Get_City_List_Suffix = "/citylist/";
@@ -80,6 +82,62 @@ public abstract class NetworkUtil {
                     @Override
                     public void run() {
                         successNetwork(model, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void getVariNetwork(String phoneNum) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("username", phoneNum);
+        map.put("status", "0");
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(Get_Vari_Suffix, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(null, tag);
+                    }
+                });
+            }
+
+            @Override
+            public void failedBlock(final String errorInfo, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        failedNetwork(errorInfo, tag);
+                    }
+                });
+            }
+        });
+    }
+
+    public void registerNetwork(String phoneNum, String pwd, String vari) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("username", phoneNum);
+        map.put("password", pwd);
+        map.put("captcha", vari);
+        map.put("status", "0");
+        ZhuHttpWithCacheManager.shareManager(activity).postRequest(Register_Suffix, map, new ZhuHttpWithCacheManager.RequestBlock() {
+            @Override
+            public void succeseeBlock(JsonElement object, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        successNetwork(null, tag);
                     }
                 });
             }

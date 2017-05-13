@@ -58,6 +58,7 @@ public class UserManager {
         this.context = context;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.hasLogin = preferences.getBoolean("hasLogin", false);
+        this.recordCount = preferences.getInt("recordCount", 0);
         Log.v("shared", ""+this.hasLogin);
     }
 

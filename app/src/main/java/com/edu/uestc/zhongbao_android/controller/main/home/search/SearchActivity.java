@@ -81,9 +81,9 @@ public class SearchActivity extends BaseActivity {
     @OnClick(R.id.searchBtn)
     void searchBtnClick(View sender) {
         searchEditLoseFocus();
-        if (String.valueOf(searchEdit.getText()).isEmpty()) return;
-        if (!searchRecord.contains(String.valueOf(searchEdit.getText()))) {
-            searchRecord.add(String.valueOf(searchEdit.getText()));
+        if (String.valueOf(searchEdit.getText()).trim().isEmpty()) return;
+        if (!searchRecord.contains(String.valueOf(searchEdit.getText()).trim())) {
+            searchRecord.add(String.valueOf(searchEdit.getText()).trim());
             UserManager.shareManager(mContext).setSearchRecord(searchRecord);
             recordAdapter.notifyDataSetChanged();
             if (searchRecord.size() == 1) recordList.addFooterView(footer);
@@ -174,6 +174,7 @@ public class SearchActivity extends BaseActivity {
                 getResponse();
             }
         });
+        resultList.onLoadMoreComplete(1);
         // 设置下拉进度的主题颜色
         refreshView.setColorSchemeResources(R.color.colorTheme);
         // 下拉时触发SwipeRefreshLayout的下拉动画，动画完毕之后就会回调这个方法
@@ -226,11 +227,11 @@ public class SearchActivity extends BaseActivity {
     }
 
     public void getResponse() {
-        if (String.valueOf(searchEdit.getText()).isEmpty()) {
+        if (String.valueOf(searchEdit.getText()).trim().isEmpty()) {
             resultList.onLoadMoreComplete(1);
             return;
         }
-        networkUtil.searchNetwork(""+page, String.valueOf(searchEdit.getText()));
+        networkUtil.searchNetwork(""+page, String.valueOf(searchEdit.getText()).trim());
     }
 
     class HomeAdapter extends BaseAdapter {

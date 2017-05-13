@@ -12,12 +12,14 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import com.edu.uestc.zhongbao_android.model.SessionDetailModel;
 import com.edu.uestc.zhongbao_android.utils.DateUtil;
 import com.edu.uestc.zhongbao_android.utils.ImageLoadManager;
 import com.edu.uestc.zhongbao_android.utils.NetworkUtil;
+import com.edu.uestc.zhongbao_android.utils.UserManager;
 import com.edu.uestc.zhongbao_android.view.BaseNavigationView;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -234,6 +237,12 @@ public class HomeDetailActivity extends BaseActivity {
     }
 
     protected void attentionSession() {
+        if (!UserManager.shareManager(mContext).getHasLogin()) {
+            Intent intent = new Intent();
+            intent.setAction("login");
+            mContext.sendBroadcast(intent);
+            return;
+        }
         attentionNetworkUtil.attentionSessionNetwork(uuid, isAttention?"0":"1");
     }
 
@@ -247,7 +256,8 @@ public class HomeDetailActivity extends BaseActivity {
         navi.setBgAlpha(0.0f);
         picHeight = Constant.getScreenWidth(mContext) *14/25;
         naviHeight = (int)(77*Constant.getDensity(mContext));
-        picButton.setHeight(picHeight);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, picHeight);
+        picButton.setLayoutParams(layoutParams);
         setupScroller();
         setupRecycler();
         getResponse();

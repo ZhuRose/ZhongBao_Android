@@ -24,6 +24,7 @@ import com.edu.uestc.zhongbao_android.model.ChoseSiteModel;
 import com.edu.uestc.zhongbao_android.model.SitePriceModel;
 import com.edu.uestc.zhongbao_android.utils.DateUtil;
 import com.edu.uestc.zhongbao_android.utils.NetworkUtil;
+import com.edu.uestc.zhongbao_android.utils.UserManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -68,7 +69,13 @@ public class ChoseSiteActivity extends BaseActivity {
 
     @OnClick(R.id.paymentBtn)
     void paymentButtonClick(View sender) {
-        startActivity(new Intent(mContext, OrderDetailActivity.class));
+        if (!UserManager.shareManager(mContext).getHasLogin()) {
+            Intent intent = new Intent();
+            intent.setAction("login");
+            mContext.sendBroadcast(intent);
+            return;
+        }
+//        startActivity(new Intent(mContext, OrderDetailActivity.class));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.edu.uestc.zhongbao_android.controller.main.sport.detail;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.edu.uestc.zhongbao_android.model.SportsCityModel;
 import com.edu.uestc.zhongbao_android.utils.AndroidBug5497Workaround;
 import com.edu.uestc.zhongbao_android.utils.NetworkUtil;
 import com.edu.uestc.zhongbao_android.utils.SoftKeyboardUtil;
+import com.edu.uestc.zhongbao_android.utils.UserManager;
 import com.edu.uestc.zhongbao_android.view.InputView;
 import com.edu.uestc.zhongbao_android.view.InputViewDelegate;
 import com.edu.uestc.zhongbao_android.view.LoadMoreListView;
@@ -97,6 +99,12 @@ public class SportDetailActivity extends BaseActivity {
             @Override
             public void getInputContent(String content, String tag) {
                 inputView.hideKeyBoard();
+                if (!UserManager.shareManager(mContext).getHasLogin()) {
+                    Intent intent = new Intent();
+                    intent.setAction("login");
+                    mContext.sendBroadcast(intent);
+                    return;
+                }
                 BaseDialogFragment.showLoading(getSupportFragmentManager());
                 replyNetwork.sportsCityReplyNetwork(uuid, content);
                 inputView.setEditText("", "请输入评论");
